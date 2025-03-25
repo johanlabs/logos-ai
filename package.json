@@ -1,0 +1,43 @@
+{
+  "name": "logos",
+  "version": "1.0.0",
+  "author": "@johanlabs",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "npm run setup:schema && nodemon src/server.js --ignore src/packages/*/schedules",
+    "setup:schema": "npm run composer && npm run create:schema",
+    "create:schema": "node script/prisma/createSchema.js",
+    "prisma:clear": "find ./prisma -mindepth 1 -maxdepth 1 ! -name fragments -exec rm -rf {} +",
+    "dependencies:clear": "rm -rf node_modules package-lock.json",
+    "clear": "npm run prisma:clear && npm run dependencies:clear",
+    "composer": "node script/composer.js",
+    "quick:start": "npm run setup:schema && prisma generate && prisma migrate dev -n qs && npm run dev"
+  },
+  "dependencies": {
+    "@prisma/client": "6.3.1",
+    "axios": "^1.8.2",
+    "bcryptjs": "^2.4.3",
+    "commander": "^13.1.0",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.17.1",
+    "glob": "^11.0.1",
+    "inquirer": "^8.2.6",
+    "jsonwebtoken": "^9.0.2",
+    "module-alias": "^2.2.3",
+    "simple-git": "^3.27.0",
+    "ws": "^8.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "prisma": "^6.3.1"
+  },
+  "_moduleAliases": {
+    "@core": "./src/core",
+    "@packages": "./src/packages",
+    "@utils": "./src/utils",
+    "@database": "./prisma/generated"
+  }
+}
