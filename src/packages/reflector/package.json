@@ -1,0 +1,8 @@
+{
+    "name": "reflector",
+    "version": "1.0.0",
+    "entry": "index.js",
+    "dependencies": {
+        "node-cron": "^3.0.3"
+    }
+}

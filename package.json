@@ -9,6 +9,7 @@
     "setup:schema": "npm run composer && npm run create:schema",
     "create:schema": "node script/prisma/createSchema.js",
     "prisma:clear": "find ./prisma -mindepth 1 -maxdepth 1 ! -name fragments -exec rm -rf {} +",
+    "prisma:studio": "prisma studio",
     "dependencies:clear": "rm -rf node_modules package-lock.json",
     "clear": "npm run prisma:clear && npm run dependencies:clear",
     "composer": "node script/composer.js",
@@ -28,7 +29,9 @@
     "jsonwebtoken": "^9.0.2",
     "module-alias": "^2.2.3",
     "simple-git": "^3.27.0",
-    "ws": "^8.18.1"
+    "ws": "^8.18.1",
+    "node-cron": "^3.0.3",
+    "svelte": "^5.25.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.9",

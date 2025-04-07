@@ -37,7 +37,7 @@ module.exports = [
     {
         method: 'get',
         router: "profile",
-        call: [verifyToken, async (req, res) => {
+        call: [ verifyToken, async (req, res) => {
             res.json(await getUser(req.user?.id));
         }]
     }

@@ -15,9 +15,15 @@ const getUser = async (id) => {
   return user;
 };
 
-function generateApiKey() {
-  return crypto.randomBytes(32).toString('hex');
-}
+const getUsers = async (params = {}) => {
+  const users = await database.user.findMany({
+    where: {
+      ...params,
+    },
+  });
+
+  return users;
+};
 
 const createUser = async (email, name, password) => {
   const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -30,7 +36,7 @@ const createUser = async (email, name, password) => {
     },
   });
 
-  const apiKey = generateApiKey();
+  const apiKey = crypto.randomBytes(32).toString('hex');
 
   await database.apiKey.create({
     data: {
@@ -82,68 +88,10 @@ const verifyToken = (req, res, next) => {
   });
 };
 
-const reqGetUser = async (req, res, next) => {
-  try {
-    const authHeader = req.headers['authorization'];
-
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return;
-    }
-
-    const apiKey = authHeader.split(' ')[1];
-    if (!apiKey) {
-      return;
-    }
-
-    const user = await getUserByApiKey(apiKey);
-
-    if (!user) {
-      return;
-    }
-
-    req.user = user;
-    req.apiKey = apiKey;
-
-    next();
-  } catch (error) {
-    console.error('Erro no middleware reqGetUser:', error);
-    return res.status(500).json({ message: 'Internal server error.' });
-  }
-};
-
-const verifyApiKey = async (req, res, next) => {
-  try {
-    const authHeader = req.headers['authorization'];
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ message: 'API Key is required in the Authorization header.' });
-    }
-
-    const apiKey = authHeader.split(' ')[1];
-    if (!apiKey) {
-      return res.status(401).json({ message: 'API Key is missing.' });
-    }
-
-    const user = await getUserByApiKey(apiKey);
-
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid or unauthorized API Key.' });
-    }
-
-    req.user = user;
-    req.apiKey = apiKey;
-
-    next();
-  } catch (error) {
-    console.error('Erro no middleware verifyApiKey:', error);
-    return res.status(500).json({ message: 'Internal server error.' });
-  }
-};
-
 module.exports = {
   getUser,
+  getUsers,
   createUser,
   authenticateUser,
-  reqGetUser,
-  verifyToken,
-  verifyApiKey
+  verifyToken
 };

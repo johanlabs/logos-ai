@@ -1,0 +1,7 @@
+{
+    "name": "@johanself/ui",
+    "version": "1.0.0",
+    "dependencies": {
+        "svelte": "^5.25.3"
+    }
+}
