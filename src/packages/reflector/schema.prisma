@@ -1,5 +1,0 @@
-
-model User {
-  id              Int      @id @default(autoincrement())
-  dailyReflection Boolean  @default(true)
-}

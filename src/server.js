@@ -14,11 +14,12 @@ const certificate = fs.readFileSync(certificatePath, 'utf8');
 const ca = fs.readFileSync(caPath, 'utf8');
 
 const credentials = { key: privateKey, cert: certificate, ca: ca };
+const port = process.env.PORT || 5040;
 
 app
   .setup()
   .then(() => {
-    https.createServer(credentials, app).listen(process.env.PORT || 5040, () => {
-      log('is ready.\n');
+    https.createServer(credentials, app).listen(port, () => {
+      log(`is ready in :${port}.\n`);
     });
   });
